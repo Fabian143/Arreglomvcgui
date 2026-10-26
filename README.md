@@ -83,4 +83,4 @@ El modelo (`Numeros.java`) sigue siendo la capa de datos/lógica del problema y 
 
 ## Autor
 
-Proyecto de estudio para practicar MVC en Java Swing.
+Fabian Yesid Londoño Penagos
