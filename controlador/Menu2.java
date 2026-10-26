@@ -22,7 +22,75 @@ public class Menu2 {
 
     public void mostrarPantalla() {
         componentes.getLblTitulo().setText("Menú de operaciones");
-        componentes.mostrarMenuOperaciones(this::opcion5, this::opcion6, this::opcion7, this::finalizarPrograma);
+        componentes.mostrarMenuOperaciones(
+            this::opcion1,
+            this::opcion2,
+            this::opcion3,
+            this::opcion4,
+            this::opcion5,
+            this::opcion6,
+            this::opcion7,
+            this::finalizarPrograma
+        );
+    }
+
+    public void opcion1() {
+        modelo.limpiar();
+        modelo.setEsarreglo(true);
+
+        componentes.mostrarFormularioDiezNumeros(
+            valores -> {
+                for (int i = 0; i < valores.length; i++) {
+                    modelo.añadirElementoArreglo(i, valores[i]);
+                }
+                mostrarPantalla();
+            },
+            () -> mostrarInfo.mostrarError("Todos los campos deben contener números válidos."),
+            this::mostrarPantalla
+        );
+    }
+
+    public void opcion2() {
+        modelo.limpiar();
+        modelo.setEsarreglo(false);
+
+        componentes.mostrarFormularioNValores(
+            numero -> modelo.añadirElementoArray(numero),
+            () -> {
+                if (Numeros.numeros2.isEmpty()) {
+                    mostrarInfo.mostrarError("Debes ingresar al menos un número.");
+                    return;
+                }
+                mostrarPantalla();
+            },
+            () -> mostrarInfo.mostrarError("Debes ingresar un número válido.")
+        );
+    }
+
+    public void opcion3() {
+        modelo.limpiar();
+        modelo.setEsarreglo(true);
+
+        for (int i = 0; i < 10; i++) {
+            modelo.aleatorioArreglo(i);
+        }
+
+        mostrarPantalla();
+    }
+
+    public void opcion4() {
+        modelo.limpiar();
+        modelo.setEsarreglo(false);
+
+        componentes.mostrarFormularioGenerarAleatorios(
+            cantidad -> {
+                for (int i = 0; i < cantidad; i++) {
+                    modelo.aleatorioArray();
+                }
+                mostrarPantalla();
+            },
+            () -> mostrarInfo.mostrarError("La cantidad debe ser un entero mayor que cero.")
+        );
     }
 
     private void opcion5() {

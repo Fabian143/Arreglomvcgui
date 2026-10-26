@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import modelo.Numeros;
 
 public class Componentes {
     private final JFrame ventana;
@@ -147,6 +148,43 @@ public class Componentes {
         mostrarPanel("PANEL_MENU1");
     }
 
+    public void mostrarMenuOperaciones(
+        Runnable opcion1,
+        Runnable opcion2,
+        Runnable opcion3,
+        Runnable opcion4,
+        Runnable opcion5,
+        Runnable opcion6,
+        Runnable opcion7,
+        Runnable opcion8
+    ) {
+        JPanel panelMenu2 = new JPanel(new BorderLayout(10, 10));
+        JPanel panelOpciones = new JPanel(new java.awt.GridLayout(4, 2, 10, 10));
+
+        JButton btnOp1 = agregarBoton(panelOpciones, "Opcion 1: Escribir 10 numeros");
+        JButton btnOp2 = agregarBoton(panelOpciones, "Opcion 2: Escribir n numeros");
+        JButton btnOp3 = agregarBoton(panelOpciones, "Opcion 3: Llenar 10 aleatorios");
+        JButton btnOp4 = agregarBoton(panelOpciones, "Opcion 4: Llenar n aleatorios");
+        JButton btnOp5 = agregarBoton(panelOpciones, "Opción 5: Mostrar números");
+        JButton btnOp6 = agregarBoton(panelOpciones, "Opción 6: Eliminar número");
+        JButton btnOp7 = agregarBoton(panelOpciones, "Opción 7: Calcular sumatoria");
+        JButton btnSalir = agregarBoton(panelOpciones, "Opción 8: Salir del programa");
+
+        panelMenu2.add(panelOpciones, BorderLayout.CENTER);
+
+        new AccionesBotones(this).configurarAccion(btnOp1, opcion1);
+        new AccionesBotones(this).configurarAccion(btnOp2, opcion2);
+        new AccionesBotones(this).configurarAccion(btnOp3, opcion3);
+        new AccionesBotones(this).configurarAccion(btnOp4, opcion4);
+        new AccionesBotones(this).configurarAccion(btnOp5, opcion5);
+        new AccionesBotones(this).configurarAccion(btnOp6, opcion6);
+        new AccionesBotones(this).configurarAccion(btnOp7, opcion7);
+        new AccionesBotones(this).configurarAccion(btnSalir, opcion8);
+
+        agregarPanel("PANEL_MENU2", panelMenu2);
+        mostrarPanel("PANEL_MENU2");
+    }
+
     public void mostrarFormularioDiezNumeros(Consumer<double[]> onGuardar, Runnable onError, Runnable onSiguiente) {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
         JPanel panelCampos = new JPanel(new java.awt.GridLayout(10, 2, 5, 5));
@@ -209,7 +247,7 @@ public class Componentes {
             try {
                 double numero = Double.parseDouble(campoNumero.getText().trim());
                 onAgregar.accept(numero);
-                lblCantidad.setText("Números ingresados: " + modelo.Numeros.numeros2.size());
+                lblCantidad.setText("Números ingresados: " + Numeros.numeros2.size());
                 campoNumero.setText("");
                 campoNumero.requestFocusInWindow();
             } catch (NumberFormatException e) {
@@ -255,26 +293,6 @@ public class Componentes {
 
         agregarPanel("PANEL_ALEATORIOS_N", panel);
         mostrarPanel("PANEL_ALEATORIOS_N");
-    }
-
-    public void mostrarMenuOperaciones(Runnable opcion5, Runnable opcion6, Runnable opcion7, Runnable opcion8) {
-        JPanel panelMenu2 = new JPanel(new BorderLayout(10, 10));
-        JPanel panelOpciones = new JPanel(new java.awt.GridLayout(4, 2, 10, 10));
-
-        JButton btnOp5 = agregarBoton(panelOpciones, "Opción 5: Mostrar números");
-        JButton btnOp6 = agregarBoton(panelOpciones, "Opción 6: Eliminar número");
-        JButton btnOp7 = agregarBoton(panelOpciones, "Opción 7: Calcular sumatoria");
-        JButton btnSalir = agregarBoton(panelOpciones, "Opción 8: Salir del programa");
-
-        panelMenu2.add(panelOpciones, BorderLayout.CENTER);
-
-        new AccionesBotones(this).configurarAccion(btnOp5, opcion5);
-        new AccionesBotones(this).configurarAccion(btnOp6, opcion6);
-        new AccionesBotones(this).configurarAccion(btnOp7, opcion7);
-        new AccionesBotones(this).configurarAccion(btnSalir, opcion8);
-
-        agregarPanel("PANEL_MENU2", panelMenu2);
-        mostrarPanel("PANEL_MENU2");
     }
 
     public String pedirTexto(String mensaje) {
