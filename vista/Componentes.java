@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
 import java.util.function.IntConsumer;
@@ -188,18 +191,27 @@ public class Componentes {
 
     public void mostrarFormularioDiezNumeros(Consumer<double[]> onGuardar, Runnable onError, Runnable onSiguiente) {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
-        JPanel panelCampos = new JPanel(new java.awt.GridLayout(10, 2, 5, 5));
+        JPanel panelCampos = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
         JTextField[] campos = new JTextField[10];
 
         for (int i = 0; i < 10; i++) {
             JLabel etiqueta = new JLabel("Número " + (i + 1) + ":");
-            JTextField campo = new JTextField(10);
-            campo.setPreferredSize(new Dimension(180, 26));
-            campo.setMinimumSize(new Dimension(180, 26));
-            campo.setMaximumSize(new Dimension(180, 26));
+            JTextField campo = new JTextField(12);
             campos[i] = campo;
-            panelCampos.add(etiqueta);
-            panelCampos.add(campo);
+
+            gbc.gridx = 0;
+            gbc.gridy = i;
+            gbc.weightx = 0.0;
+            gbc.anchor = GridBagConstraints.LINE_END;
+            panelCampos.add(etiqueta, gbc);
+
+            gbc.gridx = 1;
+            gbc.weightx = 1.0;
+            gbc.anchor = GridBagConstraints.LINE_START;
+            panelCampos.add(campo, gbc);
         }
 
         JButton btnTerminar = new JButton("Terminar");
@@ -228,16 +240,26 @@ public class Componentes {
 
     public void mostrarFormularioNValores(DoubleConsumer onAgregar, Runnable onTerminar, Runnable onError) {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
-        JPanel panelEntrada = new JPanel(new java.awt.GridLayout(1, 2, 5, 0));
+        JPanel panelEntrada = new JPanel(new GridBagLayout());
         JPanel panelBotones = new JPanel(new java.awt.FlowLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel lblNumero = new JLabel("Ingresa un número:");
-        JTextField campoNumero = new JTextField(10);
-        aplicarCampoCompacto(campoNumero);
+        JTextField campoNumero = new JTextField(12);
         JLabel lblCantidad = new JLabel("Números ingresados: 0");
 
-        panelEntrada.add(lblNumero);
-        panelEntrada.add(campoNumero);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0.0;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        panelEntrada.add(lblNumero, gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        panelEntrada.add(campoNumero, gbc);
 
         JButton btnAgregar = new JButton("Agregar número");
         JButton btnTerminar = new JButton("Terminar");
@@ -270,13 +292,24 @@ public class Componentes {
 
     public void mostrarFormularioGenerarAleatorios(IntConsumer onGenerar, Runnable onError) {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
-        JPanel panelEntrada = new JPanel(new java.awt.GridLayout(1, 2, 5, 0));
+        JPanel panelEntrada = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel lblCantidad = new JLabel("Cantidad de números aleatorios:");
-        JTextField campoCantidad = new JTextField(10);
-        aplicarCampoCompacto(campoCantidad);
-        panelEntrada.add(lblCantidad);
-        panelEntrada.add(campoCantidad);
+        JTextField campoCantidad = new JTextField(12);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0.0;
+        gbc.anchor = GridBagConstraints.LINE_END;
+        panelEntrada.add(lblCantidad, gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 1.0;
+        gbc.anchor = GridBagConstraints.LINE_START;
+        panelEntrada.add(campoCantidad, gbc);
 
         JButton btnGenerar = new JButton("Generar números");
         panel.add(panelEntrada, BorderLayout.CENTER);
@@ -303,7 +336,7 @@ public class Componentes {
 
     private void aplicarCampoCompacto(JTextField campo) {
         campo.setPreferredSize(new Dimension(180, 26));
-        campo.setMinimumSize(new Dimension(180, 10));
+        campo.setMinimumSize(new Dimension(180, 26));
         campo.setMaximumSize(new Dimension(180, 26));
     }
 
