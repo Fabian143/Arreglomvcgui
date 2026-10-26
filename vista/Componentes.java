@@ -3,6 +3,7 @@ package vista;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
 import java.util.function.IntConsumer;
@@ -193,6 +194,9 @@ public class Componentes {
         for (int i = 0; i < 10; i++) {
             JLabel etiqueta = new JLabel("Número " + (i + 1) + ":");
             JTextField campo = new JTextField(10);
+            campo.setPreferredSize(new Dimension(180, 26));
+            campo.setMinimumSize(new Dimension(180, 26));
+            campo.setMaximumSize(new Dimension(180, 26));
             campos[i] = campo;
             panelCampos.add(etiqueta);
             panelCampos.add(campo);
@@ -224,11 +228,12 @@ public class Componentes {
 
     public void mostrarFormularioNValores(DoubleConsumer onAgregar, Runnable onTerminar, Runnable onError) {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
-        JPanel panelEntrada = new JPanel(new java.awt.GridLayout(1, 2, 5, 5));
+        JPanel panelEntrada = new JPanel(new java.awt.GridLayout(1, 2, 5, 0));
         JPanel panelBotones = new JPanel(new java.awt.FlowLayout());
 
         JLabel lblNumero = new JLabel("Ingresa un número:");
         JTextField campoNumero = new JTextField(10);
+        aplicarCampoCompacto(campoNumero);
         JLabel lblCantidad = new JLabel("Números ingresados: 0");
 
         panelEntrada.add(lblNumero);
@@ -265,10 +270,11 @@ public class Componentes {
 
     public void mostrarFormularioGenerarAleatorios(IntConsumer onGenerar, Runnable onError) {
         JPanel panel = new JPanel(new BorderLayout(10, 10));
-        JPanel panelEntrada = new JPanel(new java.awt.GridLayout(1, 2, 5, 5));
+        JPanel panelEntrada = new JPanel(new java.awt.GridLayout(1, 2, 5, 0));
 
         JLabel lblCantidad = new JLabel("Cantidad de números aleatorios:");
         JTextField campoCantidad = new JTextField(10);
+        aplicarCampoCompacto(campoCantidad);
         panelEntrada.add(lblCantidad);
         panelEntrada.add(campoCantidad);
 
@@ -293,6 +299,12 @@ public class Componentes {
 
         agregarPanel("PANEL_ALEATORIOS_N", panel);
         mostrarPanel("PANEL_ALEATORIOS_N");
+    }
+
+    private void aplicarCampoCompacto(JTextField campo) {
+        campo.setPreferredSize(new Dimension(180, 26));
+        campo.setMinimumSize(new Dimension(180, 26));
+        campo.setMaximumSize(new Dimension(180, 26));
     }
 
     public String pedirTexto(String mensaje) {
