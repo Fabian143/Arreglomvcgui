@@ -303,7 +303,7 @@ public class Componentes {
 
     private void aplicarCampoCompacto(JTextField campo) {
         campo.setPreferredSize(new Dimension(180, 26));
-        campo.setMinimumSize(new Dimension(180, 26));
+        campo.setMinimumSize(new Dimension(180, 10));
         campo.setMaximumSize(new Dimension(180, 26));
     }
 
