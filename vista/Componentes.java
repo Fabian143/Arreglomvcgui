@@ -1,5 +1,6 @@
 package vista;
 
+// Layouts y organización visual
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
@@ -7,49 +8,60 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+
+// Utilidades funcionales / callbacks
 import java.util.function.Consumer;
 import java.util.function.DoubleConsumer;
 import java.util.function.IntConsumer;
+
+
+// Componentes visibles de Swing
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import modelo.Numeros;
+import javax.swing.JOptionPane;
 
 public class Componentes {
+    
     private final JFrame ventana;
     private final JPanel contenedor;
     private final CardLayout tarjetas;
     private JLabel lblTitulo;
     private JTextField campoTexto;
 
+    //este jodido constructor se utiliza un monton en muchas clases distintas
     public Componentes(String titulo) {
-        ventana = new JFrame(titulo);
-        ventana.setUndecorated(true);
-        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ventana.setSize(600, 400);
-        ventana.setLocationRelativeTo(null);
+        
+        ventana = new JFrame(titulo);//titulo de la ventana no tengo idea de cuando se cambia
+        
+        ventana.setUndecorated(true);//Esto lo que hace es ocultar la barra donde esta la x
+        ventana.setSize(600, 400);//ventana de 600*400 pixeles
+        ventana.setLocationRelativeTo(null);//la ventana aparecera centrada
 
         tarjetas = new CardLayout();
         contenedor = new JPanel(tarjetas);
         campoTexto = new JTextField();
         lblTitulo = new JLabel(titulo, JLabel.CENTER);
 
-        ventana.setLayout(new BorderLayout(5, 5));
+        ventana.setLayout(new BorderLayout(5, 5));//5 px de separación horizontal y 5 px de separación vertical
         ventana.add(lblTitulo, BorderLayout.NORTH);
         ventana.add(contenedor, BorderLayout.CENTER);
     }
 
+    /* Metodo que permite agregar un boton con su nombre que es el nombre que aparecer en la ventana a cierto panel*/
+    /* @return JButton para poder manejar ese boton más tarde*/
     public JButton agregarBoton(JPanel panel, String textoBoton) {
         JButton boton = new JButton(textoBoton);
         panel.add(boton);
         return boton;
     }
 
+    /* Metodo que permite agregar un campo de texto donde el usuario ingresara cierto dato a un panel */
+    /* @return JTextField para poder usar lo que esta en el campo de texto */
     public JTextField agregarCampoTexto(JPanel panel, int columnas) {
         campoTexto = new JTextField(columnas);
         panel.add(campoTexto);
@@ -65,21 +77,22 @@ public class Componentes {
     }
 
     public void agregarPanel(String nombre, JPanel panel) {
-        for (Component componente : contenedor.getComponents()) {
+        for (Component componente : contenedor.getComponents()) {//hay que recordar que cotenedor es una variable JPanel de la clase
             if (nombre.equals(componente.getName())) {
                 contenedor.remove(componente);
                 break;
-            }
+            }//lo que hace este bucle for es borrar lo anterior del panel actual para dar entrada a un nuevo panel
         }
+        
         panel.setName(nombre);
-        contenedor.add(panel, nombre);
+        contenedor.add(panel, nombre);//añadimos un panel como componente al panel actual con cierto nombre que sirve como identificador
     }
 
     public void mostrarPanel(String nombre) {
         tarjetas.show(contenedor, nombre);
     }
 
-    public JTextArea agregarAreaMensajes(JPanel panel, int filas, int columnas) {
+    public JTextArea agregarAreaMensajes(JPanel panel, int filas, int columnas) {//lamentablemente creo que este metodo no se usa en este proyecto
         JTextArea area = new JTextArea(filas, columnas);
         area.setEditable(false);
         area.setLineWrap(true);
@@ -88,7 +101,7 @@ public class Componentes {
         return area;
     }
 
-    public JScrollPane agregarScrollMensajes(JPanel panel, JTextArea area) {
+    public JScrollPane agregarScrollMensajes(JPanel panel, JTextArea area) {//Esto definitivamente no se usa
         JScrollPane scroll = new JScrollPane(area);
         panel.add(scroll);
         return scroll;
@@ -118,23 +131,25 @@ public class Componentes {
         return ventana;
     }
 
-    public void mostrarPantallaInicio(String mensaje, Runnable accionContinuar) {
+    public void mostrarPantallaInicio(String mensaje, Runnable accionContinuar) {//metodo muy importante para el controlador aqui comienzo el flujo
+        
         JPanel panelInicio = new JPanel(new BorderLayout(10, 10));
-        JLabel lblBienvenida = new JLabel(mensaje, JLabel.CENTER);
+        JLabel lblBienvenida = new JLabel(mensaje, JLabel.CENTER);//Etiqueta centrada
         JButton btnContinuar = new JButton("Continuar al Menú");
 
-        panelInicio.add(lblBienvenida, BorderLayout.CENTER);
-        panelInicio.add(btnContinuar, BorderLayout.SOUTH);
+        panelInicio.add(lblBienvenida, BorderLayout.CENTER);//pone la etiqueta en el centro del panel
+        panelInicio.add(btnContinuar, BorderLayout.SOUTH);//pone el boton abajo
 
-        new AccionesBotones(this).configurarAccion(btnContinuar, accionContinuar);
+        new AccionesBotones(this).configurarAccion(btnContinuar, accionContinuar);//deja preparado una acción oara definir en otra parte del primer botón
 
         agregarPanel("PANEL_INICIO", panelInicio);
         mostrarPanel("PANEL_INICIO");
     }
 
-    public void mostrarMenuPrincipal(Runnable opcion1, Runnable opcion2, Runnable opcion3, Runnable opcion4) {
-        JPanel panelMenu1 = new JPanel(new BorderLayout(10, 10));
-        JPanel panelOpciones = new JPanel(new java.awt.GridLayout(2, 2, 10, 10));
+    public void mostrarMenuPrincipal(Runnable opcion1, Runnable opcion2, Runnable opcion3, Runnable opcion4) {//este es el menu de 4 opciones
+        
+        JPanel panelMenu1 = new JPanel(new BorderLayout(10, 10));//10 pixeles de separación en general
+        JPanel panelOpciones = new JPanel(new GridLayout(2, 2, 10, 10));//genera una cuadricula de 2 filas y 2 columnas con 10 pixeles de separación general
 
         JButton btnOp1 = agregarBoton(panelOpciones, "Opcion 1: Escribir 10 numeros");
         JButton btnOp2 = agregarBoton(panelOpciones, "Opcion 2: Escribir n numeros");
@@ -152,18 +167,12 @@ public class Componentes {
         mostrarPanel("PANEL_MENU1");
     }
 
-    public void mostrarMenuOperaciones(
-        Runnable opcion1,
-        Runnable opcion2,
-        Runnable opcion3,
-        Runnable opcion4,
-        Runnable opcion5,
-        Runnable opcion6,
-        Runnable opcion7,
-        Runnable opcion8
-    ) {
-        JPanel panelMenu2 = new JPanel(new BorderLayout(10, 10));
-        JPanel panelOpciones = new JPanel(new java.awt.GridLayout(4, 2, 10, 10));
+    //los Runable son de una interfaz de java que permite no poner los metodos de una vez sino que en otra parte del codigo
+    public void mostrarMenuOperaciones(Runnable opcion1,Runnable opcion2,Runnable opcion3,Runnable opcion4,
+                                       Runnable opcion5,Runnable opcion6,Runnable opcion7,Runnable opcion8)
+    {
+        JPanel panelMenu2 = new JPanel(new BorderLayout(10, 10));//10 pixeles de separación en general
+        JPanel panelOpciones = new JPanel(new GridLayout(4, 2, 10, 10));//genera una cuadricula de 4 filas y 2 columnas con 10 pixeles de separación general
 
         JButton btnOp1 = agregarBoton(panelOpciones, "Opcion 1: Escribir 10 numeros");
         JButton btnOp2 = agregarBoton(panelOpciones, "Opcion 2: Escribir n numeros");
@@ -176,6 +185,7 @@ public class Componentes {
 
         panelMenu2.add(panelOpciones, BorderLayout.CENTER);
 
+        // Las opciones definidas como parametros son definidas como la acción al presionar cada uno de los respectivos botones
         new AccionesBotones(this).configurarAccion(btnOp1, opcion1);
         new AccionesBotones(this).configurarAccion(btnOp2, opcion2);
         new AccionesBotones(this).configurarAccion(btnOp3, opcion3);
